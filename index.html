@@ -1,1 +1,168 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISW-306: Proyecto Integrador</title>
+    <style>
+        :root {
+            --azul-uapa: #0b1838;
+            --naranja-uapa: #F68121;
+            --gris-fondo: #f4f6f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--gris-fondo);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header y Navegación Semántica */
+        header {
+            background-color: var(--azul-uapa);
+            color: white;
+            padding: 1rem 2rem;
+            border-bottom: 4px solid var(--naranja-uapa);
+        }
+
+        nav h2 {
+            font-size: 1.5rem;
+        }
+
+        /* Contenedor Principal (Flexbox para Responsive) */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        /* Cambio a dos columnas en pantallas grandes (Responsive) */
+        @media (min-width: 768px) {
+            main {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        h1, h3 {
+            color: var(--azul-uapa);
+            margin-bottom: 1rem;
+        }
+
+        /* Formulario requerido por la asignación */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: var(--naranja-uapa);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #d96f18;
+        }
+
+        aside {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            height: fit-content;
+            border-left: 4px solid var(--azul-uapa);
+        }
+
+        footer {
+            background-color: var(--azul-uapa);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <h2>ISW-306 · Proyecto Integrador</h2>
+        </nav>
+    </header>
+
+    <main>
+        <section class="card">
+            <h1>Formulario de Registro de Datos</h1>
+            <p style="margin-bottom: 1.5rem; color: #666;">Etapa 1: Estructura Semántica y Estilización.</p>
+            
+            <form action="#" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="nombre">Nombre Completo</label>
+                    <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="matricula">Matrícula</label>
+                    <input type="text" id="matricula" placeholder="Ej. 1000XXXXX" required>
+                </div>
+
+                <button type="submit">Guardar Registro</button>
+            </form>
+        </section>
+
+        <aside>
+            <h3>Equipo de Desarrollo</h3>
+            <p><strong>Integrantes:</strong></p>
+            <ul style="margin: 1rem 0 0 1.2rem; color: #555;">
+                <li>Marcktd (Líder)</li>
+                <li>Uriel Tejada</li>
+            </ul>
+        </aside>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 - Universidad Abierta Para Adultos (UAPA)</p>
+    </footer>
+
+</body>
+</html>
