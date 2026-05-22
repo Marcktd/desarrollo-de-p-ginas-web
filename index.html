@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,176 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISW-306: Proyecto Integrador</title>
     <link rel="icon" href="data:,">
-    <style>
-        :root {
-            --azul-uapa: #0b1838;
-            --naranja-uapa: #F68121;
-            --gris-fondo: #f4f6f9;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--gris-fondo);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Header y Navegación Semántica */
-        header {
-            background-color: var(--azul-uapa);
-            color: white;
-            padding: 1rem 2rem;
-            border-bottom: 4px solid var(--naranja-uapa);
-        }
-
-        nav h2 {
-            font-size: 1.5rem;
-        }
-
-        /* Contenedor Principal (Flexbox para Responsive) */
-        main {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        /* Cambio a dos columnas en pantallas grandes (Responsive) */
-        @media (min-width: 768px) {
-            main {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        h1, h3 {
-            color: var(--azul-uapa);
-            margin-bottom: 1rem;
-        }
-
-        /* Formulario requerido por la asignación */
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #444;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            background-color: white; 
-            color: #333;
-        }
-
-        button {
-            background-color: var(--naranja-uapa);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #d96f18;
-        }
-
-        aside {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            height: fit-content;
-            border-left: 4px solid var(--azul-uapa);
-        }
-
-        footer {
-            background-color: var(--azul-uapa);
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            margin-top: auto;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <nav>
             <h2>ISW-306 · Proyecto Integrador</h2>
+            <h3>Maquetado de la pagina</h3>
         </nav>
     </header>
 
     <main>
         <section class="card">
+            <h2>Iniciar Sesión</h2>
+            <p class="subtitulo">Accede a tu cuenta para continuar.</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="usuario">Usuario o Correo</label>
+                    <input type="text" id="usuario" placeholder="Ingresa tu nombre de usuario" required autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresa tu clave" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+        </section>
+
+        <section class="card">
             <h1>Formulario de Registro de Datos</h1>
-            <p style="margin-bottom: 1.5rem; color: #666;">Etapa 1: Estructura Semántica y Estilización.</p>
+            <p class="subtitulo">Etapa 1: Estructura Semántica y Estilización.</p>
             
             <form action="#" onsubmit="event.preventDefault();">
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
                     <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="matricula">Matrícula</label>
                     <input type="text" id="matricula" placeholder="Ej. 1000XXXXX" required>
                 </div>
-
                 <button type="submit">Guardar Registro</button>
             </form>
         </section>
-        <section class="card" style="margin-top: 2rem;">
+
+        <section class="card">
             <h2>Productos Disponibles</h2>
-            <p style="margin-bottom: 1.5rem; color: #666;">Selecciona el equipo para comprar.</p>
+            <p class="subtitulo">Selecciona el equipo para comprar.</p>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
-                    <img src="https://m.media-amazon.com/images/I/619xpFKAXPL.jpg" alt="Mouse Razer" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
-                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Mouse Razer Viper V3 Pro</h3>
-                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$8,000 DOP</p>
-                    <p style="font-size: 0.9rem; color: #555;">Ratón inalámbrico ultraligero de alto rendimiento (pesa solo 54 gramos), diseñado para eSports.</p>
+            <div class="grid-productos">
+                <article class="producto-item">
+                    <img src="https://m.media-amazon.com/images/I/619xpFKAXPL.jpg" alt="Mouse Razer">
+                    <h3 style="color: var(--naranja-uapa);">Mouse Razer Viper V3 Pro</h3>
+                    <p class="producto-precio">$8,000 DOP</p>
+                    <p class="producto-desc">Ratón inalámbrico ultraligero de alto rendimiento.</p>
                 </article>
 
-                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
-                    <img src="https://m.media-amazon.com/images/I/61Aub-sM2AL._AC_SL1500_.jpg" alt="Teclado Ajazz" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
-                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Teclado Ajazz ak820 pro</h3>
-                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$6,000 DOP</p>
-                    <p style="font-size: 0.9rem; color: #555;">Teclado mecánico compacto (75%) con pantalla TFT personalizable, perilla de aluminio y sistema de tecleo suave.</p>
+                <article class="producto-item">
+                    <img src="https://m.media-amazon.com/images/I/61Aub-sM2AL._AC_SL1500_.jpg" alt="Teclado Ajazz">
+                    <h3 style="color: var(--naranja-uapa);">Teclado Ajazz ak820 pro</h3>
+                    <p class="producto-precio">$6,000 DOP</p>
+                    <p class="producto-desc">Teclado mecánico compacto (75%) con pantalla TFT.</p>
                 </article>
 
-                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
-                    <img src="https://korsaka.com/wp-content/uploads/2026/04/Diseno-sin-titulo-2026-04-14T121906.736.png" alt="Laptop MSI" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
-                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Laptop Msi Cyborg 17 Intel Core 5 210H. Rtx5060</h3>
-                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$75,900 DOP</p>
-                    <p style="font-size: 0.9rem; color: #555;">Potente equipo con pantalla de 17.3" a 144Hz, procesador Intel Core i5 y gráficos Nvidia RTX 5060. Rendimiento total.</p>
+                <article class="producto-item">
+                    <img src="https://korsaka.com/wp-content/uploads/2026/04/Diseno-sin-titulo-2026-04-14T121906.736.png" alt="Laptop MSI">
+                    <h3 style="color: var(--naranja-uapa);">Laptop Msi Cyborg 17</h3>
+                    <p class="producto-precio">$75,900 DOP</p>
+                    <p class="producto-desc">Pantalla de 17.3", Intel Core i5 y RTX 5060.</p>
                 </article>
             </div>
         </section>
@@ -183,10 +84,10 @@
         <aside>
             <h3>Equipo de Desarrollo</h3>
             <p><strong>Integrantes:</strong></p>
-            <ul style="margin: 1rem 0 0 1.2rem; color: #555;">
+            <ul class="lista-equipo">
                 <li>Marcos Peña Rosario (Líder)</li>
                 <li>Uriel Tejada</li>
-                 <li>Usuario...</li>
+                <li>Usuario...</li>
             </ul>
         </aside>
     </main>
@@ -195,5 +96,16 @@
         <p>&copy; 2026 - Universidad Abierta Para Adultos (UAPA) diseñoa</p>
     </footer>
 
+    <script>
+        const usuarioInput = document.getElementById('usuario');
+        const passwordInput = document.getElementById('password');
+
+        usuarioInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                passwordInput.focus(); 
+            }
+        });
+    </script>
 </body>
 </html>
