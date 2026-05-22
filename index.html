@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISW-306: Proyecto Integrador</title>
+    <link rel="icon" href="data:,">
     <style>
         :root {
             --azul-uapa: #0b1838;
@@ -86,6 +87,8 @@
             padding: 0.8rem;
             border: 1px solid #ccc;
             border-radius: 4px;
+            background-color: white; 
+            color: #333;
         }
 
         button {
@@ -148,6 +151,33 @@
 
                 <button type="submit">Guardar Registro</button>
             </form>
+        </section>
+        <section class="card" style="margin-top: 2rem;">
+            <h2>Productos Disponibles</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">Selecciona el equipo para comprar.</p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
+                    <img src="https://m.media-amazon.com/images/I/619xpFKAXPL.jpg" alt="Mouse Razer" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
+                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Mouse Razer Viper V3 Pro</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$8,000 DOP</p>
+                    <p style="font-size: 0.9rem; color: #555;">Ratón inalámbrico ultraligero de alto rendimiento (pesa solo 54 gramos), diseñado para eSports.</p>
+                </article>
+
+                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
+                    <img src="https://m.media-amazon.com/images/I/61Aub-sM2AL._AC_SL1500_.jpg" alt="Teclado Ajazz" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
+                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Teclado Ajazz ak820 pro</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$6,000 DOP</p>
+                    <p style="font-size: 0.9rem; color: #555;">Teclado mecánico compacto (75%) con pantalla TFT personalizable, perilla de aluminio y sistema de tecleo suave.</p>
+                </article>
+
+                <article style="border: 1px solid #ccc; padding: 1rem; border-radius: 4px;">
+                    <img src="https://korsaka.com/wp-content/uploads/2026/04/Diseno-sin-titulo-2026-04-14T121906.736.png" alt="Laptop MSI" style="width: 100%; height: 150px; object-fit: contain; margin-bottom: 1rem;">
+                    <h3 style="color: var(--naranja-uapa); margin-bottom: 0.5rem;">Laptop Msi Cyborg 17 Intel Core 5 210H. Rtx5060</h3>
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">$75,900 DOP</p>
+                    <p style="font-size: 0.9rem; color: #555;">Potente equipo con pantalla de 17.3" a 144Hz, procesador Intel Core i5 y gráficos Nvidia RTX 5060. Rendimiento total.</p>
+                </article>
+            </div>
         </section>
 
         <aside>
