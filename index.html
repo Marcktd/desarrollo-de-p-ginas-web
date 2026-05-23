@@ -1,154 +1,90 @@
+<<<<<<< HEAD
 
 <<!DOCTYPE html>
+=======
+<!DOCTYPE html>
+>>>>>>> 632c56d645e0c7266fc581f1b5a6c72f8c1294a3
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ISW-306: Proyecto Integrador</title>
-    <style>
-        :root {
-            --azul-uapa: #0b1838;
-            --naranja-uapa: #F68121;
-            --gris-fondo: #f4f6f9;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--gris-fondo);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Header y Navegación Semántica */
-        header {
-            background-color: var(--azul-uapa);
-            color: white;
-            padding: 1rem 2rem;
-            border-bottom: 4px solid var(--naranja-uapa);
-        }
-
-        nav h2 {
-            font-size: 1.5rem;
-        }
-
-        /* Contenedor Principal (Flexbox para Responsive) */
-        main {
-            flex: 1;
-            max-width: 1200px;
-            width: 100%;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        /* Cambio a dos columnas en pantallas grandes (Responsive) */
-        @media (min-width: 768px) {
-            main {
-                grid-template-columns: 2fr 1fr;
-            }
-        }
-
-        .card {
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        h1, h3 {
-            color: var(--azul-uapa);
-            margin-bottom: 1rem;
-        }
-
-        /* Formulario requerido por la asignación */
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #444;
-        }
-
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: var(--naranja-uapa);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #d96f18;
-        }
-
-        aside {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            height: fit-content;
-            border-left: 4px solid var(--azul-uapa);
-        }
-
-        footer {
-            background-color: var(--azul-uapa);
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            margin-top: auto;
-            font-size: 0.9rem;
-        }
-    </style>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header>
         <nav>
             <h2>ISW-306 · Proyecto Integrador</h2>
+            <h3>Maquetado de la pagina</h3>
         </nav>
     </header>
 
   
     <main>
         <section class="card">
+            <h2>Iniciar Sesión</h2>
+            <p class="subtitulo">Accede a tu cuenta para continuar.</p>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="usuario">Usuario o Correo</label>
+                    <input type="text" id="usuario" placeholder="Ingresa tu nombre de usuario" required autofocus>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingresa tu clave" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+        </section>
+
+        <section class="card">
             <h1>Formulario de Registro de Datos</h1>
-            <p style="margin-bottom: 1.5rem; color: #666;">Etapa 1: Estructura Semántica y Estilización.</p>
+            <p class="subtitulo">Etapa 1: Estructura Semántica y Estilización.</p>
             
             <form action="#" onsubmit="event.preventDefault();">
                 <div class="form-group">
                     <label for="nombre">Nombre Completo</label>
                     <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required>
                 </div>
-                
                 <div class="form-group">
                     <label for="matricula">Matrícula</label>
                     <input type="text" id="matricula" placeholder="Ej. 1000XXXXX" required>
                 </div>
-
                 <button type="submit">Guardar Registro</button>
             </form>
+        </section>
+
+        <section class="card">
+            <h2>Productos Disponibles</h2>
+            <p class="subtitulo">Selecciona el equipo para comprar.</p>
+            
+            <div class="grid-productos">
+                <article class="producto-item">
+                    <img src="https://m.media-amazon.com/images/I/619xpFKAXPL.jpg" alt="Mouse Razer">
+                    <h3 style="color: var(--naranja-uapa);">Mouse Razer Viper V3 Pro</h3>
+                    <p class="producto-precio">$8,000 DOP</p>
+                    <p class="producto-desc">Ratón inalámbrico ultraligero de alto rendimiento.</p>
+                </article>
+
+                <article class="producto-item">
+                    <img src="https://m.media-amazon.com/images/I/61Aub-sM2AL._AC_SL1500_.jpg" alt="Teclado Ajazz">
+                    <h3 style="color: var(--naranja-uapa);">Teclado Ajazz ak820 pro</h3>
+                    <p class="producto-precio">$6,000 DOP</p>
+                    <p class="producto-desc">Teclado mecánico compacto (75%) con pantalla TFT.</p>
+                </article>
+
+                <article class="producto-item">
+                    <img src="https://korsaka.com/wp-content/uploads/2026/04/Diseno-sin-titulo-2026-04-14T121906.736.png" alt="Laptop MSI">
+                    <h3 style="color: var(--naranja-uapa);">Laptop Msi Cyborg 17</h3>
+                    <p class="producto-precio">$75,900 DOP</p>
+                    <p class="producto-desc">Pantalla de 17.3", Intel Core i5 y RTX 5060.</p>
+                </article>
+            </div>
         </section>
 
         <aside>
@@ -238,6 +174,7 @@
       
         <aside>
             <h3>Equipo de Desarrollo</h3>
+<<<<<<< HEAD
 
             <ul>
                 <li>Marcos Peña Rosario</li>
@@ -246,6 +183,26 @@
             </ul>
         </aside>
 
+=======
+            <p><strong>Integrantes:</strong></p>
+            <ul class="lista-equipo">
+                <li>Marcos Peña Rosario (Líder)</li>
+                <li>Uriel Tejada</li>
+                <li>Luis Ernesto Hernández Peralta</li>
+            </ul>
+        </aside>
+
+           <aside>
+            <h3>menu</h3>
+            <p><strong>INterfas</strong></p>
+            <ul class="lista-equipo">
+                <li></li>
+                <li>Como sera la pagina</li>
+            </ul>
+        </aside>
+
+
+>>>>>>> 632c56d645e0c7266fc581f1b5a6c72f8c1294a3
     </main>
 
    
@@ -255,9 +212,38 @@
 
   
     <footer>
+<<<<<<< HEAD
         <p>
             &copy; 2026 - Universidad Abierta Para Adultos (UAPA)
         </p>
+=======
+        <p>&copy; 2026 - Universidad Abierta Para Adultos (UAPA) diseñoa</p>
+    </footer>
+
+    <script>
+        const usuarioInput = document.getElementById('usuario');
+        const passwordInput = document.getElementById('password');
+
+        usuarioInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); 
+                passwordInput.focus(); 
+            }
+        });
+    </script>
+
+<footer class="main-footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <h3>Universidad Abierta para Adultos (UAPA)</h3>
+                <p>Asignatura: Desarrollo de Aplicaciones Web</p>
+                <p>Proyecto Integrador - Grupo #X</p>
+            </div>
+            <div class="footer-copyright">
+                <p>&copy; 2026 Todos los derechos reservados.</p>
+            </div>
+        </div>
+>>>>>>> 632c56d645e0c7266fc581f1b5a6c72f8c1294a3
     </footer>
 
 </body>
