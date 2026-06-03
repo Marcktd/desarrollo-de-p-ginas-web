@@ -19,3 +19,20 @@ function ValidarElCorreo(email) {
     }
     return false;
 }
+/**
+ * @param {string} monto
+ * @returns {boolean}
+ */
+function ValidarElMonto(monto) {
+    if (monto.trim() === '') {
+        return false;
+    }
+    
+    const numero = Number(monto);
+    
+    if (isNaN(numero) || numero < 0) {
+        return false;
+    }
+    
+    return true;
+}
