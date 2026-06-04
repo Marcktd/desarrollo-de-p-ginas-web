@@ -36,3 +36,40 @@ function ValidarElMonto(monto) {
     
     return true;
 }
+
+//Lógica de caja
+
+let cajaAbierta = false;
+let montoEnCaja = 0;
+let totalVentasDelDia = 0;
+
+function abrirCaja(montoIngresado) {
+    const esValido = ValidarElMonto(montoIngresado);
+
+    if (esValido === false) {
+        return { exito: false, mensaje: "Error: El monto inicial no es válido o está vacío." };
+    }
+
+    montoEnCaja = Number(montoIngresado);
+    cajaAbierta = true;
+
+    return { exito: true, mensaje: `Caja abierta exitosamente con $${montoEnCaja}.` };
+}
+
+function cerrarCaja(contraseñaIngresada) {
+    const claveNoVacia = ValidarElCampoVacio(contraseñaIngresada);
+
+    if (claveNoVacia === false) {
+        return { exito: false, mensaje: "Error: Debe ingresar una contraseña para cerrar." };
+    }
+
+    const claveCorrecta = "admin123";
+    if (contraseñaIngresada !== claveCorrecta) {
+        return { exito: false, mensaje: "Error: Contraseña incorrecta." };
+    }
+
+    const resumen = `Cierre exitoso. Monto inicial: $${montoEnCaja} | Ventas del día: $${totalVentasDelDia}.`;
+    cajaAbierta = false;
+
+    return { exito: true, mensaje: resumen };
+}
