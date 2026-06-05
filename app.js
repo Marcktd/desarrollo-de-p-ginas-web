@@ -93,15 +93,12 @@ function cerrarCaja(contraseñaIngresada) {
 
     return { exito: true, mensaje: resumen };
 }
+// =======================================================
 // GESTOR DE PERSISTENCIA DE DATOS (LocalStorage)
-/**
- * Guarda un arreglo de objetos en el LocalStorage del navegador.
- * @param {string} llave - El nombre clave para identificar los datos guardados.
- * @param {Array} arreglo - El arreglo de objetos de JavaScript que se desea persistir.
- */
+// =======================================================
+
 function guardarEnLocalStorage(llave, arreglo) {
     try {
-        // LocalStorage solo almacena texto plano, por eso convertimos el arreglo con stringify
         const datosTexto = JSON.stringify(arreglo);
         localStorage.setItem(llave, datosTexto);
         console.log(`[Persistencia] Datos guardados exitosamente bajo la llave: "${llave}"`);
@@ -110,18 +107,21 @@ function guardarEnLocalStorage(llave, arreglo) {
     }
 }
 
-/**
- * Recupera un arreglo de objetos desde el LocalStorage.
- * @param {string} llave - El nombre de la clave que se desea buscar.
- * @returns {Array} - Devuelve el arreglo con los datos o un arreglo vacío [] si no hay nada.
- */
 function obtenerDesdeLocalStorage(llave) {
     try {
         const datosTexto = localStorage.getItem(llave);
-        // Si existen datos en texto, los transformamos de vuelta a un objeto/arreglo de JS
         return datosTexto ? JSON.parse(datosTexto) : [];
     } catch (error) {
         console.error("[Persistencia] Error crítico al obtener de LocalStorage:", error);
         return [];
     }
+}
+
+// Inicialización Automática
+let datosPersistidos = obtenerDesdeLocalStorage('datos_aplicacion');
+
+function registrarYPersistirDato(nuevoObjeto) {
+    datosPersistidos.push(nuevoObjeto);
+    guardarEnLocalStorage('datos_aplicacion', datosPersistidos);
+    console.log("[Persistencia] Nuevo dato registrado y sincronizado en LocalStorage.");
 }
