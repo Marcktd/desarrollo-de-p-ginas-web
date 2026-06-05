@@ -1,6 +1,14 @@
 /**
- * @param {string} valor
- * @returns {boolean}
+ * 1 - MÓDULO DE VALIDACIONES
+ * Creado por: Uriel Tejada Padilla 
+ * Funciones encargadas de verificar la integridad de los datos
+ * en tiempo real antes de permitir acciones en el sistema.
+ */
+
+/**
+ * Verifica si un campo de texto está vacío o contiene solo espacios.
+ * @param {string} valor - El texto ingresado.
+ * @returns {boolean} - Retorna true si tiene contenido válido, false si está vacío.
  */
 function ValidarElCampoVacio(valor) {
     if (valor.trim() === '') {
@@ -9,8 +17,9 @@ function ValidarElCampoVacio(valor) {
     return true; 
 }
 /**
- * @param {string} email
- * @returns {boolean}
+ * Valida si el formato de un correo electrónico es correcto.
+ * @param {string} email - Correo electrónico a evaluar.
+ * @returns {boolean} - Retorna true si el correo es válido, false si no.
  */
 function ValidarElCorreo(email) {
     const regex = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
@@ -29,6 +38,8 @@ function ValidarElMonto(monto) {
     }
     
     const numero = Number(monto);
+
+    // Nota de integracion: Se mantiene "numero < 0" para permitir abrir caja con $0 pesos.
     
     if (isNaN(numero) || numero < 0) {
         return false;
@@ -36,13 +47,20 @@ function ValidarElMonto(monto) {
     
     return true;
 }
+/**
+ * 2 - MÓDULO DE OPERACIONES DE CAJA
+ * Creado por: Keila Nicole Payamps Rosario 
+ * Controla el flujo de apertura, cierre y control de caja del sistema.
+ */
+
+// Variables globales
 
 //Lógica de caja
 
 let cajaAbierta = false;
 let montoEnCaja = 0;
 let totalVentasDelDia = 0;
-
+//Intenta abrir la caja registrando un monto inicial válido.
 function abrirCaja(montoIngresado) {
     const esValido = ValidarElMonto(montoIngresado);
 
@@ -55,7 +73,8 @@ function abrirCaja(montoIngresado) {
 
     return { exito: true, mensaje: `Caja abierta exitosamente con $${montoEnCaja}.` };
 }
-
+ 
+//Cierra la caja del día validando la contraseña administrativa.
 function cerrarCaja(contraseñaIngresada) {
     const claveNoVacia = ValidarElCampoVacio(contraseñaIngresada);
 
@@ -63,6 +82,7 @@ function cerrarCaja(contraseñaIngresada) {
         return { exito: false, mensaje: "Error: Debe ingresar una contraseña para cerrar." };
     }
 
+    // Credencial estática temporal de administración
     const claveCorrecta = "admin123";
     if (contraseñaIngresada !== claveCorrecta) {
         return { exito: false, mensaje: "Error: Contraseña incorrecta." };
