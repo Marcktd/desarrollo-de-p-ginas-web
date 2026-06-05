@@ -93,9 +93,8 @@ function cerrarCaja(contraseñaIngresada) {
 
     return { exito: true, mensaje: resumen };
 }
-// =======================================================
+
 // GESTOR DE PERSISTENCIA DE DATOS (LocalStorage)
-// =======================================================
 
 function guardarEnLocalStorage(llave, arreglo) {
     try {
