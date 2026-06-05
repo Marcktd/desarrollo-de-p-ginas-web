@@ -124,3 +124,19 @@ function registrarYPersistirDato(nuevoObjeto) {
     guardarEnLocalStorage('datos_aplicacion', datosPersistidos);
     console.log("[Persistencia] Nuevo dato registrado y sincronizado en LocalStorage.");
 }
+
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Evita que la página se recargue[cite: 1, 2]
+
+    const usuario = document.getElementById('usuario').value;
+    const pass = document.getElementById('password').value;
+
+    // Validación de credenciales por defecto
+    if (usuario === "admin" && pass === "admin123") {
+        // Redirige al archivo Panel_Inicio.html 
+        window.location.href = " Panel_Inicio.html"; 
+    } else {
+        alert("Usuario o contraseña incorrectos");
+    }
+});
