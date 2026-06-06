@@ -135,7 +135,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
     // Validación de credenciales por defecto
     if (usuario === "admin" && pass === "admin123") {
         // Redirige al archivo Panel_Inicio.html 
-        window.location.href = " Panel_Inicio.html"; 
+        window.location.href = "Panel_Inicio.html"; 
     } else {
         alert("Usuario o contraseña incorrectos");
     }
