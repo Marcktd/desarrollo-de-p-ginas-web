@@ -1,0 +1,29 @@
+--- MANUAL DE CONSULTAS SQL PARA SISTEMA_VENTAS ---
+
+1. CREATE (Insertar Datos)
+- Agregar un nuevo usuario:
+INSERT INTO Usuario (nombre, correo, password) VALUES ('Nombre', 'correo@ejemplo.com', '12345');
+
+- Abrir caja (Registrar monto inicial):
+INSERT INTO Apertura_caja (is_usuario, monto_inicial, estado) VALUES (1, 500.00, 'abierto');
+
+2. READ (Consultar Datos)
+- Login (Verificar usuario):
+SELECT id, nombre FROM Usuario WHERE correo = '...' AND password = '...';
+
+- Ver productos:
+SELECT * FROM Producto;
+
+3. UPDATE (Actualizar Datos)
+- Cerrar caja (Cambiar estado):
+UPDATE Apertura_caja SET estado = 'cerrado' WHERE id = 1;
+
+- Descontar stock de producto (Ejemplo: vender 1 unidad):
+UPDATE Producto SET stock = stock - 1 WHERE id = 1;
+
+4. DELETE (Eliminar Datos)
+- Eliminar un producto:
+DELETE FROM Producto WHERE id = 1;
+
+----------------------------------------------------
+
