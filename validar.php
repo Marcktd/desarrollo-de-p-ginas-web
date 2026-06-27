@@ -1,25 +1,48 @@
 <?php
-session_start();
 
-// Asegúrate de que tu archivo de conexión se llame exactamente 'conexion.php'
-include 'conexion.php'; 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-$correo = $_POST['correo'];
-$password = $_POST['password'];
+require_once 'conexion.php'; 
 
-$sql = "SELECT id, correo FROM Usuario WHERE correo = '$correo' AND password = '$password'";
-$resultado = mysqli_query($conexion, $sql);
+$data = json_decode(file_get_contents("php://input"), true);
+$correo = isset($data['correo']) ? trim($data['correo']) : (isset($_POST['correo']) ? trim($_POST['correo']) : '');
+$password = isset($data['password']) ? trim($data['password']) : (isset($_POST['password']) ? trim($_POST['password']) : '');
 
-if (mysqli_num_rows($resultado) > 0) {
-    $fila = mysqli_fetch_assoc($resultado);
-    
-    $_SESSION['id_usuario'] = $fila['id'];
-    $_SESSION['correo_usuario'] = $fila['correo']; 
-    
-    header("Location: abrir_caja.php"); 
+if (empty($correo) || empty($password)) {
+    echo json_encode(["status" => "error", "message" => "Credenciales incompletas."]);
     exit();
-} else {
-    echo "Correo o contraseña incorrectos. <br>";
-    echo "<a href='login.php'>Volver a intentar</a>";
+}
+
+try {
+    $sql = "SELECT id, correo FROM Usuario WHERE correo = :correo AND password = :password LIMIT 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindParam(':correo', $correo);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+    
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
+        $_SESSION['usuario_id'] = $user['id'];
+        $_SESSION['usuario_correo'] = $user['correo']; 
+        
+        echo json_encode([
+            "status" => "success",
+            "message" => "Sesión iniciada correctamente.",
+            "redirect" => "abrir_caja.php"
+        ]);
+    } else {
+        echo json_encode([
+            "status" => "error",
+            "message" => "Correo o contraseña incorrectos."
+        ]);
+    }
+} catch (PDOException $e) {
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error en el servidor: " . $e->getMessage()
+    ]);
 }
 ?>
