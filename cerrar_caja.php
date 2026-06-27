@@ -47,7 +47,7 @@ if (!isset($_SESSION['id_usuario'])) {
         document.addEventListener("DOMContentLoaded", () => {
             
             // URL de prueba temporal
-            const urlBackend = 'https://jsonplaceholder.typicode.com/users/1';
+         const urlBackend = 'api_caja.php?accion=consultar';
 
             console.log("Iniciando petición fetch al servidor...");
 
