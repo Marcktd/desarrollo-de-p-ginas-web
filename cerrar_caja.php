@@ -1,83 +1,69 @@
 <?php
-session_start();
 
-//Si intenta entrar sin loguearse, va al login
-if (!isset($_SESSION['id_usuario'])) {
-    header("Location: login.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once 'conexion.php';
+
+
+if (!isset($_SESSION['usuario_id'])) {
+    http_response_code(401);
+    echo json_encode(["status" => "error", "message" => "Acceso no autorizado."]);
     exit();
 }
+
+$id_usuario = $_SESSION['usuario_id'];
+
+try {
+    
+    $query_caja = "SELECT id, monto_inicial FROM Apertura_caja WHERE is_usuario = :id_usuario AND estado = 'abierto' ORDER BY id DESC LIMIT 1";
+    $stmt = $conn->prepare($query_caja);
+    $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+    $stmt->execute();
+    $caja = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$caja) {
+        echo json_encode(["status" => "warning", "message" => "No se encontró ninguna caja abierta para este usuario."]);
+        exit();
+    }
+
+    $id_caja = $caja['id'];
+    $monto_inicial = floatval($caja['monto_inicial']);
+
+    $conn->beginTransaction();
+
+    $query_ventas = "SELECT SUM(total) as total_ventas FROM Venta WHERE id_usuario = :id_usuario";
+    $stmt_ventas = $conn->prepare($query_ventas);
+    $stmt_ventas->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+    $stmt_ventas->execute();
+    $res_ventas = $stmt_ventas->fetch(PDO::FETCH_ASSOC);
+    $total_ventas = $res_ventas['total_ventas'] ? floatval($res_ventas['total_ventas']) : 0.00;
+
+    $monto_final = $monto_inicial + $total_ventas;
+    
+    $query_update = "UPDATE Apertura_caja SET estado = 'cerrado' WHERE id = :id_caja";
+    $stmt_update = $conn->prepare($query_update);
+    $stmt_update->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
+    $stmt_update->execute();
+
+    $conn->commit();
+
+    echo json_encode([
+        "status" => "success",
+        "message" => "Cierre de caja procesado exitosamente.",
+        "datos" => [
+            "caja_id" => $id_caja,
+            "monto_inicial" => $monto_inicial,
+            "total_ventas" => $total_ventas,
+            "monto_final_calculado" => $monto_final
+        ]
+    ]);
+
+} catch (Exception $e) {
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
+    http_response_code(500);
+    echo json_encode(["status" => "error", "message" => "Error en el servidor: " . $e->getMessage()]);
+}
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Ventas - Cerrar Caja</title>
-</head>
-<body>
-
-    <div>
-        <h2>Módulo: Cerrar Caja</h2>
-        <p>Los datos se consultan en tiempo real desde el servidor mediante API (JSON).</p>
-        
-        <hr>
-
-        <div>
-            <strong>Cajero Responsable (Email):</strong> 
-            <span><?php echo $_SESSION['correo_usuario']; ?></span>
-        </div>
-        
-        <div>
-            <strong>Total Ventas del Día:</strong> 
-            <span id="caja-ventas">Consultando...</span>
-        </div>
-        
-        <div>
-            <strong>Estado de Caja:</strong> 
-            <span id="caja-estado">Cargando...</span>
-        </div>
-
-        <button id="btn-confirmar-cierre">
-            Confirmar Cierre de Caja
-        </button>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            
-            // URL de prueba temporal
-         const urlBackend = 'api_caja.php?accion=consultar';
-
-            console.log("Iniciando petición fetch al servidor...");
-
-            // FETCH PARA OBTENER LOS DATOS REALES (Sin usar localStorage)
-            fetch(urlBackend)
-                .then(respuesta => {
-                    if (!respuesta.ok) {
-                        throw new Error("Error en la respuesta del servidor");
-                    }
-                    return respuesta.json();
-                })
-                .then(datosRecibidos => {
-                    console.log("Datos recibidos:", datosRecibidos);
-
-                    // MANIPULACIÓN DEL DOM: Actualizamos los textos
-                    document.getElementById('caja-ventas').textContent = "RD$ 15,450.00"; 
-                    document.getElementById('caja-estado').textContent = "Abierta";
-                })
-                .catch(error => {
-                    console.error("Hubo un fallo en el fetch:", error);
-                    document.getElementById('caja-estado').textContent = "Error de conexión";
-                });
-
-            // ACCIÓN DEL BOTÓN DE CONFIRMACIÓN
-            document.getElementById('btn-confirmar-cierre').addEventListener('click', () => {
-                alert("Petición enviada. La caja ha sido cerrada en MariaDB.");
-                document.getElementById('caja-estado').textContent = "Cerrada Exitosamente";
-            });
-        });
-    </script>
-
-</body>
-</html>
