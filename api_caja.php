@@ -1,41 +1,86 @@
 <?php
-session_start();
-// 1. Incluir conexión
-include 'conexion.php'; 
+/**
+ * ====================================================================
+ * CONTROLLER: API CAJA
+ * Misión: Procesar peticiones asíncronas y flujos del estado de caja.
+ * Respuestas: Formato estricto API (JSON).
+ * Asignación: Etapa 3 - Servidor y Lógica Backend.
+ * ====================================================================
+ */
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-// 2. Definir que la respuesta será JSON
-header('Content-Type: application/json');
+require_once 'conexion.php'; 
 
-// 3. Validar sesión
-if (!isset($_SESSION['id_usuario'])) {
+header('Content-Type: application/json; charset=UTF-8');
+
+if (!isset($_SESSION['usuario_id'])) {
+    http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'No autorizado']);
     exit;
 }
 
-// 4. Determinar la acción (consultar datos o cerrar caja)
+$id_usuario = $_SESSION['usuario_id'];
 $accion = $_GET['accion'] ?? '';
 
-if ($accion == 'consultar') {
-    $stmt = $conexion->prepare("SELECT * FROM apertura_caja WHERE estado = 'abierto' AND id_usuario = ?");
-    $stmt->bind_param("i", $_SESSION['id_usuario']);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $datos = $resultado->fetch_assoc();
-    
-    echo json_encode($datos);
+try {
+    if ($accion === 'consultar') {
+        $stmt = $conn->prepare("SELECT * FROM Apertura_caja WHERE estado = 'abierto' AND is_usuario = :id_usuario LIMIT 1");
+        $stmt->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt->execute();
+        $datos = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        echo json_encode($datos ? $datos : ['message' => 'No hay cajas abiertas']);
 
-} elseif ($accion == 'cerrar') {
-    $stmt = $conexion->prepare("UPDATE apertura_caja SET estado = 'cerrado' WHERE estado = 'abierto' AND id_usuario = ?");
-    $stmt->bind_param("i", $_SESSION['id_usuario']);
-    $stmt->execute();
+    } elseif ($accion === 'cerrar') {
+        $stmt_caja = $conn->prepare("SELECT id, monto_inicial FROM Apertura_caja WHERE estado = 'abierto' AND is_usuario = :id_usuario LIMIT 1");
+        $stmt_caja->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt_caja->execute();
+        $caja = $stmt_caja->fetch(PDO::FETCH_ASSOC);
 
-    // Verificamos si se actualizó al menos una fila
-    if ($stmt->affected_rows > 0) {
-        echo json_encode(['success' => true, 'message' => 'Caja cerrada correctamente']);
+        if (!$caja) {
+            echo json_encode(['success' => false, 'message' => 'No hay caja abierta para cerrar']);
+            exit;
+        }
+
+        $id_caja = $caja['id'];
+        $monto_inicial = floatval($caja['monto_inicial']);
+
+        $conn->beginTransaction();
+
+        $stmt_ventas = $conn->prepare("SELECT SUM(total) as total_ventas FROM Venta WHERE id_usuario = :id_usuario");
+        $stmt_ventas->bindParam(':id_usuario', $id_usuario, PDO::PARAM_INT);
+        $stmt_ventas->execute();
+        $res_ventas = $stmt_ventas->fetch(PDO::FETCH_ASSOC);
+        $total_ventas = $res_ventas['total_ventas'] ? floatval($res_ventas['total_ventas']) : 0.00;
+
+        $monto_final_calculado = $monto_inicial + $total_ventas;
+
+        $stmt_update = $conn->prepare("UPDATE Apertura_caja SET estado = 'cerrado' WHERE id = :id_caja");
+        $stmt_update->bindParam(':id_caja', $id_caja, PDO::PARAM_INT);
+        $stmt_update->execute();
+
+        $conn->commit();
+
+        echo json_encode([
+            'success' => true, 
+            'message' => 'Caja cerrada correctamente',
+            'resumen' => [
+                'caja_id' => $id_caja,
+                'monto_inicial' => $monto_inicial,
+                'ventas_totales' => $total_ventas,
+                'monto_final_sistema' => $monto_final_calculado
+            ]
+        ]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'No hay caja abierta para cerrar']);
+        echo json_encode(['success' => false, 'message' => 'Acción no válida']);
     }
+} catch (Exception $e) {
+    if ($conn->inTransaction()) {
+        $conn->rollBack();
+    }
+    http_response_code(500);
+    echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage()]);
 }
-
-
 ?>
