@@ -1,21 +1,22 @@
 <?php
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// 1. Cargamos la conexión que acabas de arreglar
 require_once 'conexion.php'; 
 
-$data = json_decode(file_get_contents("php://input"), true);
-$correo = isset($data['correo']) ? trim($data['correo']) : (isset($_POST['correo']) ? trim($_POST['correo']) : '');
-$password = isset($data['password']) ? trim($data['password']) : (isset($_POST['password']) ? trim($_POST['password']) : '');
+// 2. Recogemos los datos de forma tradicional desde el formulario ($_POST)
+$correo = isset($_POST['correo']) ? trim($_POST['correo']) : '';
+$password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
 if (empty($correo) || empty($password)) {
-    echo json_encode(["status" => "error", "message" => "Credenciales incompletas."]);
+    header("Location: index.php?error=vacio");
     exit();
 }
 
 try {
+    // 3. Buscamos al usuario de forma segura con PDO usando $conn
     $sql = "SELECT id, correo FROM Usuario WHERE correo = :correo AND password = :password LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':correo', $correo);
@@ -25,24 +26,20 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
+        // 4. Guardamos las variables de sesión correctas
         $_SESSION['usuario_id'] = $user['id'];
         $_SESSION['usuario_correo'] = $user['correo']; 
         
-        echo json_encode([
-            "status" => "success",
-            "message" => "Sesión iniciada correctamente.",
-            "redirect" => "abrir_caja.php"
-        ]);
+        // 5. Redirigimos a la pantalla que necesitas
+        header("Location: abrir_caja.php");
+        exit();
     } else {
-        echo json_encode([
-            "status" => "error",
-            "message" => "Correo o contraseña incorrectos."
-        ]);
+        // Si los datos están mal, regresa al index y muestra el mensaje rojo
+        header("Location: index.php?error=incorrecto");
+        exit();
     }
 } catch (PDOException $e) {
-    echo json_encode([
-        "status" => "error",
-        "message" => "Error en el servidor: " . $e->getMessage()
-    ]);
+    // Si la base de datos falla, nos dirá por qué en lugar de dar error 500
+    die("Error en la consulta: " . $e->getMessage());
 }
 ?>

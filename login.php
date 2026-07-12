@@ -5,8 +5,13 @@
     <title>Iniciar Sesión</title>
 </head>
 <body>
+    <?php
+if (isset($_GET['error'])) {
+    echo "<p style='color:red;'>Error: Credenciales inválidas o incompletas.</p>";
+}
+?>
     <h2>Acceso al Sistema</h2>
-    <form action="validar.php" method="POST">
+   <form action="validar.php" method="POST">
         <label>Correo:</label><br>
         <input type="email" name="correo" required><br><br>
         

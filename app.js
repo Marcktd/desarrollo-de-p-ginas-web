@@ -125,7 +125,7 @@ function registrarYPersistirDato(nuevoObjeto) {
     console.log("[Persistencia] Nuevo dato registrado y sincronizado en LocalStorage.");
 }
 
-
+/* --- BLOQUE DESACTIVADO PARA PERMITIR QUE PHP HAGA EL LOGIN ---
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault(); // Evita que la página se recargue[cite: 1, 2]
 
@@ -140,3 +140,4 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         alert("Usuario o contraseña incorrectos");
     }
 });
+*/
