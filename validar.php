@@ -3,20 +3,21 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// 1. Cargamos la conexión que acabas de arreglar
+// 1. Cargamos la conexión
 require_once 'conexion.php'; 
 
-// 2. Recogemos los datos de forma tradicional desde el formulario ($_POST)
+// 2. Recogemos los datos del formulario
 $correo = isset($_POST['correo']) ? trim($_POST['correo']) : '';
 $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
+// Ajuste: si falla, regresa a login.php, no a index.php
 if (empty($correo) || empty($password)) {
-    header("Location: index.php?error=vacio");
+    header("Location: login.php?error=vacio");
     exit();
 }
 
 try {
-    // 3. Buscamos al usuario de forma segura con PDO usando $conn
+    // 3. Buscamos al usuario de forma segura
     $sql = "SELECT id, correo FROM Usuario WHERE correo = :correo AND password = :password LIMIT 1";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':correo', $correo);
@@ -26,20 +27,19 @@ try {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user) {
-        // 4. Guardamos las variables de sesión correctas
+        // 4. Guardamos las variables de sesión
         $_SESSION['usuario_id'] = $user['id'];
         $_SESSION['usuario_correo'] = $user['correo']; 
         
-        // 5. Redirigimos a la pantalla que necesitas
-        header("Location: abrir_caja.php");
+        // 5. Redirigimos al flujo de trabajo del cajero
+       header("Location: dashboard1/abrir_caja.php");
         exit();
     } else {
-        // Si los datos están mal, regresa al index y muestra el mensaje rojo
-        header("Location: index.php?error=incorrecto");
+        // Ajuste: si los datos están mal, regresa a login.php
+        header("Location: login.php?error=incorrecto");
         exit();
     }
 } catch (PDOException $e) {
-    // Si la base de datos falla, nos dirá por qué en lugar de dar error 500
     die("Error en la consulta: " . $e->getMessage());
 }
 ?>

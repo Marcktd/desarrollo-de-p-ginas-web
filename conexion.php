@@ -1,15 +1,9 @@
+
 <?php
-<<<<<<< HEAD
 $host = "127.0.0.1";
 $dbname = "sistema_ventas"; 
 $username = "root";         
 $password = "";             
-=======
-$host = 'localhost';
-$usuario = 'root';
-$contraseña = '';
-$base_de_datos = 'sistema_ventas';
->>>>>>> 421a06feab36c7052678234823aac9afcbcf8821
 
 try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
