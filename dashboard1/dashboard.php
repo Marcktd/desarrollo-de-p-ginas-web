@@ -1,167 +1,120 @@
+<?php
+session_start();
+
+// --- ACTIVAR VISUALIZACIÓN DE ERRORES ---
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+// ----------------------------------------
+
+require_once 'conexion.php'; 
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Control - POS</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Panel de Control - Catálogo</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* Estilos rápidos para acomodar el botón de login en el encabezado */
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: wrap;
+        }
+        .nav-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .btn-acceso-cliente {
+            background-color: #f37023; /* Naranja UAPA */
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn-acceso-cliente:hover {
+            background-color: #d65c18;
+            transform: scale(1.02);
+        }
+    </style>
 </head>
 <body>
-
     <header>
         <nav>
-            <h2>ISW-306 · Proyecto Integrador</h2>
-            <h3>Panel de Ventas</h3>
+            <div class="nav-info">
+                <h2>ISW-306 · Proyecto Integrador</h2>
+                <h3>Catálogo de Productos</h3>
+            </div>
+            
+            <div class="nav-acceso">
+                <a href="login_clientes.php" class="btn-acceso-cliente">
+                    <i class="bi bi-person-bounding-box"></i> Acceso Clientes
+                </a>
+            </div>
         </nav>
     </header>
 
     <main>
         <section class="card">
-            <h2>Bienvenido al Sistema</h2>
-            <p>gestion de ventas y productos.</p>
-        </section>
-        
-        </main>
-
-          <section class="card">
             <h2>Productos Disponibles</h2>
             <p class="subtitulo">Selecciona el equipo para comprar.</p>
             
             <div class="grid-productos">
-                <article class="producto-item">
-                    <img src="https://m.media-amazon.com/images/I/619xpFKAXPL.jpg" alt="Mouse Razer">
-                    <h3 style="color: var(--naranja-uapa);">Mouse Razer Viper V3 Pro</h3>
-                    <p class="producto-precio">$8,000 DOP</p>
-                    <p class="producto-desc">Ratón inalámbrico ultraligero de alto rendimiento.</p>
-                </article>
+                <?php
+                try {
+                    // 1. Seleccionamos las columnas reales
+                    $stmt = $conn->prepare("SELECT id, nombre, precio, stock, descripcion, imagen FROM Producto");
+                    $stmt->execute();
+                    
+                    $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                <article class="producto-item">
-                    <img src="https://m.media-amazon.com/images/I/61Aub-sM2AL._AC_SL1500_.jpg" alt="Teclado Ajazz">
-                    <h3 style="color: var(--naranja-uapa);">Teclado Ajazz ak820 pro</h3>
-                    <p class="producto-precio">$6,000 DOP</p>
-                    <p class="producto-desc">Teclado mecánico compacto (75%) con pantalla TFT.</p>
-                </article>
-
-                <article class="producto-item">
-                    <img src="https://korsaka.com/wp-content/uploads/2026/04/Diseno-sin-titulo-2026-04-14T121906.736.png" alt="Laptop MSI">
-                    <h3 style="color: var(--naranja-uapa);">Laptop Msi Cyborg 17</h3>
-                    <p class="producto-precio">$75,900 DOP</p>
-                    <p class="producto-desc">Pantalla de 17.3", Intel Core i5 y RTX 5060.</p>
-                </article>
+                    if ($productos && count($productos) > 0) {
+                        foreach ($productos as $producto) {
+                            echo '<article class="producto-item" style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #fff;">';
+                            
+                            // 2. ✅ CORRECCIÓN CLAVE: Agregamos '../' para salir de dashboard1 e ir a la raíz de uploads
+                            if (!empty($producto['imagen'])) {
+                                $ruta_img = '../uploads/' . $producto['imagen'];
+                            } else {
+                                $ruta_img = 'https://via.placeholder.com/300x200?text=Sin+Imagen';
+                            }
+                            
+                            echo '<img src="' . htmlspecialchars($ruta_img) . '" alt="' . htmlspecialchars($producto['nombre']) . '" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px; display: block; margin: 0 auto;">';
+                            
+                            // 3. Datos del producto
+                            echo '<h3 style="color: #f37023; margin-repeat: 0; margin-top: 15px; font-size: 1.3rem;">' . htmlspecialchars($producto['nombre']) . '</h3>';
+                            echo '<p class="producto-precio" style="font-weight: bold; font-size: 1.1rem; margin: 5px 0;">$' . number_format($producto['precio'], 2) . ' DOP</p>';
+                            
+                            // 4. Stock disponible
+                            echo '<p class="producto-desc" style="color: #666; font-size: 0.9rem;">Stock disponible: ' . htmlspecialchars($producto['stock']) . ' unidades</p>';
+                            
+                            echo '</article>';
+                        }
+                    } else {
+                        echo "<p>No hay productos disponibles en este momento.</p>";
+                    }
+                } catch (PDOException $e) {
+                    echo "<p>Error al cargar productos: " . $e->getMessage() . "</p>";
+                }
+                ?>
             </div>
         </section>
-
-        <aside>
-            
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ISW-306: Proyecto Integrador</title>
-
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    
-
-   
-    <header>
-        <nav>
-            <h2>ISW-306 · Proyecto Integrador</h2>
-        </nav>
-    </header>
-
-   
-    <main>
-
-        
-        <section class="card">
-            <h1>Formulario de Compra.</h1>
-
-            <p class="texto">
-                Complete el siguiente formulario para realizar su compra.
-            </p>
-
-            <form action="#" onsubmit="event.preventDefault();">
-
-                <div class="form-group">
-                    <label for="nombre">Nombre Completo</label>
-                    <input type="text" id="nombre" placeholder="Ej. Juan Pérez" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Correo Electrónico</label>
-                    <input type="email" id="email" placeholder="Ej. correo@gmail.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="producto">Seleccione un Producto</label>
-
-                    <select id="producto" required>
-                        <option value="">Seleccione...</option>
-                        <option>Laptop HP</option>
-                        <option>Mouse Gamer</option>
-                        <option>Teclado Mecánico</option>
-                    </select>
-                </div>
-
-                <button type="submit">Comprar</button>
-
-            </form>
-        </section>
-
-    
-        <section class="productos">
-
-            <h2>Productos en Venta.</h2>
-
-            <article class="producto">
-                <h3>Laptop HP</h3>
-                <p><strong>Precio:</strong> RD$45,000</p>
-                <p>Laptop moderna ideal para estudiantes y oficina.</p>
-            </article>
-
-            <article class="producto">
-                <h3>Mouse Gamer</h3>
-                <p><strong>Precio:</strong> RD$1,500</p>
-                <p>Mouse RGB ergonómico de alta precisión.</p>
-            </article>
-
-            <article class="producto">
-                <h3>Teclado Mecánico</h3>
-                <p><strong>Precio:</strong> RD$3,500</p>
-                <p>Teclado mecánico con luces LED y switches azules.</p>
-            </article>
-
-        </section>
-
-
-
-
-
-
-
-
-
-        
+    </main>
 
     <footer class="main-footer">
-        <div class="footer-container">
-            <div class="footer-info">
-                <h3>Universidad Abierta para Adultos (UAPA)</h3>
-                <p>Asignatura: Desarrollo de Aplicaciones Web</p>
-                <p>Proyecto Integrador - Sistema POS</p>
-            </div>
-            <div class="footer-copyright">
-                <p>&copy; 2026 Todos los derechos reservados.</p>
-            </div>
-        </div>
-        
+        <p>&copy; 2026 Universidad Abierta para Adultos (UAPA) - Sistema POS</p>
     </footer>
-
-    
-    
-    <script src="app.js"></script>
+    <script src="../app.js"></script>
 </body>
 </html>

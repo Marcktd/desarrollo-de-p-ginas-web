@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $ruta_destino = '../../uploads/' . $nombre_archivo;
         
         if (move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta_destino)) {
-            // 2. Actualizar con nueva imagen y código de barras
+            // ✅ CORRECCIÓN: Se restauraron los nombres reales de la BD (nombre e id)
             $sql = "UPDATE Producto SET nombre=:nombre, precio=:precio, stock=:stock, codigo_barras=:codigo_barras, imagen=:img WHERE id=:id";
             $stmt = $conn->prepare($sql);
             $stmt->execute([
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]);
         }
     } else {
-        // 3. Actualizar sin cambiar la imagen pero actualizando el código de barras
+        // ✅ CORRECCIÓN: Se restauraron los nombres reales de la BD (nombre e id)
         $sql = "UPDATE Producto SET nombre=:nombre, precio=:precio, stock=:stock, codigo_barras=:codigo_barras WHERE id=:id";
         $stmt = $conn->prepare($sql);
         $stmt->execute([
@@ -52,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
     }
 
+    // Te redirige de vuelta a la lista de productos de forma limpia
     header("Location: lista.php?status=actualizado");
     exit();
 }

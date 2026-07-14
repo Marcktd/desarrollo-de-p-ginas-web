@@ -1,6 +1,6 @@
 <?php
 session_start();
-// Salimos dos niveles para buscar la conexión (Ajustar cuando muevas el archivo)
+// Salimos dos niveles para buscar la conexión
 require_once '../conexion.php';
 
 if (!isset($_SESSION['usuario_id'])) {
@@ -11,7 +11,10 @@ if (!isset($_SESSION['usuario_id'])) {
 // Obtenemos los datos del producto de forma segura con Prepared Statements
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
-    $stmt = $conn->prepare("SELECT * FROM Producto WHERE id = :id");
+    
+    // ✅ CORRECCIÓN: Usamos los nombres reales de las columnas en tu base de datos
+    // id, nombre, precio, stock, codigo_barras, imagen
+    $stmt = $conn->prepare("SELECT id, nombre, precio, stock, codigo_barras, imagen FROM Producto WHERE id = :id");
     $stmt->execute([':id' => $id]);
     $producto = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -80,10 +83,10 @@ if (isset($_GET['id'])) {
                     
                     <?php if (!empty($producto['imagen'])): ?>
                         <div class="mt-3 d-flex align-items-center gap-3 p-2 border rounded bg-white" style="max-width: 350px;">
-                            <img src="../../uploads/<?php echo $producto['imagen']; ?>" alt="Vista previa" class="img-thumbnail" style="width: 70px; height: 70px; object-fit: cover;">
+                            <img src="../../uploads/<?php echo htmlspecialchars($producto['imagen']); ?>" alt="Vista previa" class="img-thumbnail" style="width: 70px; height: 70px; object-fit: cover;">
                             <div>
                                 <span class="d-block text-muted small">Imagen actual:</span>
-                                <strong class="text-truncate d-inline-block" style="max-width: 200px;"><?php echo $producto['imagen']; ?></strong>
+                                <strong class="text-truncate d-inline-block" style="max-width: 200px;"><?php echo htmlspecialchars($producto['imagen']); ?></strong>
                             </div>
                         </div>
                     <?php else: ?>
