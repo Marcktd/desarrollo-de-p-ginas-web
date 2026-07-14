@@ -12,7 +12,20 @@
    <main class="container mt-5">
     <h2 class="text-center mb-5">Bienvenido al Sistema de Ventas</h2>
     
+  
+
     <div class="row justify-content-center">
+        <div class="col-md-5">
+             <div class="card shadow-sm h-100">
+                <div class="card-body text-center p-5">
+                    <h3 class="card-title">Clientes</h3>
+                    <p class="text-muted">Explora nuestros productos disponibles.</p>
+                    <a href="index1.php" class="btn btn-success w-100">Ver Catálogo</a>
+                </div>
+            </div>
+        </div>
+
+         
         <div class="col-md-5">
             <div class="card shadow-sm h-100">
                 <div class="card-body text-center p-5">
@@ -23,15 +36,6 @@
             </div>
         </div>
 
-        <div class="col-md-5">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center p-5">
-                    <h3 class="card-title">Clientes</h3>
-                    <p class="text-muted">Explora nuestros productos disponibles.</p>
-                    <a href="index1.php" class="btn btn-success w-100">Ver Catálogo</a>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 

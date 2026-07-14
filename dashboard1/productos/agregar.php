@@ -41,7 +41,7 @@ if (!isset($_SESSION['usuario_id'])) {
                 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Imagen del Producto</label>
-                    <input type="file" name="imagen" class="form-control" accept="image/*" required>
+                    <input type="file" name="imagen" class="form-control" accept="image/*" >
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">

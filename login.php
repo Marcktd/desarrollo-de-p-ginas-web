@@ -15,7 +15,7 @@
                     <div class='alert alert-danger'>Credenciales incorrectas.</div>
                 <?php endif; ?>
 
-          <form action="validar.php" method="POST">
+         <form action="dashboard1/validar.php" method="POST">
     <div class="mb-3">
         <label for="correo">Correo Electrónico</label>
         <input type="email" name="correo" id="correo" class="form-control" required autofocus>

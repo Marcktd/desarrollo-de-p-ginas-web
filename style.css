@@ -36,11 +36,22 @@ main {
     width: 100%;
     margin: 2rem auto;
     padding: 0 1rem;
+    /* Se eliminó display: grid para permitir que Bootstrap controle las columnas */
+}
+
+/* NOTA: Si en el futuro tienes otra página que SI necesita una barra lateral (aside), 
+  usa esta clase específica en lugar de aplicárselo a todo el <main>.
+  Solo agrega class="layout-con-sidebar" a esa página.
+*/
+.layout-con-sidebar {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
 }
 
+@media (min-width: 768px) {
+    .layout-con-sidebar { grid-template-columns: 2fr 1fr; }
+}
 @media (min-width: 768px) {
     main { grid-template-columns: 2fr 1fr; }
 }

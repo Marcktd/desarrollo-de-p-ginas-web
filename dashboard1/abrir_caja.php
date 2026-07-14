@@ -7,7 +7,7 @@ if (!isset($_SESSION['usuario_id'])) {
     exit();
 }
 
-require_once '../conexion.php';
+require_once 'conexion.php';
 ?>
 
 <!DOCTYPE html>

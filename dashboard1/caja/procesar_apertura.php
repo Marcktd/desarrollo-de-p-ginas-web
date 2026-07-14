@@ -32,7 +32,7 @@ if (!isset($_SESSION['usuario_id'])) {
     </div>
 
     <div class="d-grid gap-2">
-        <a href="dashboard.php" class="btn btn-primary btn-lg">Realizar una Venta</a>
+       <a href="../ventas/realizar_venta.php" class="btn btn-primary">Realizar una Venta a</a>
       <a href="../productos/lista.php" class="btn btn-info btn-lg text-white">Agregar/Gestionar Productos</a>
         <a href="reportes.php" class="btn btn-secondary btn-lg">Ver Reporte Parcial</a>
         <hr>
