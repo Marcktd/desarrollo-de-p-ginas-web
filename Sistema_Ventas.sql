@@ -42,6 +42,37 @@ LOCK TABLES `Apertura_caja` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Caja`
+--
+
+DROP TABLE IF EXISTS `Caja`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Caja` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_usuario` int NOT NULL,
+  `fecha_apertura` datetime DEFAULT CURRENT_TIMESTAMP,
+  `fecha_cierre` datetime DEFAULT NULL,
+  `monto_inicial` decimal(10,2) NOT NULL,
+  `monto_final` decimal(10,2) DEFAULT NULL,
+  `estado` enum('abierta','cerrada') DEFAULT 'abierta',
+  PRIMARY KEY (`id`),
+  KEY `id_usuario` (`id_usuario`),
+  CONSTRAINT `Caja_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `Usuario` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Caja`
+--
+
+LOCK TABLES `Caja` WRITE;
+/*!40000 ALTER TABLE `Caja` DISABLE KEYS */;
+INSERT INTO `Caja` VALUES (1,2,'2026-07-17 03:24:45','2026-07-17 03:30:37',1.00,78000.00,'cerrada'),(2,2,'2026-07-17 03:39:52',NULL,133.00,NULL,'abierta');
+/*!40000 ALTER TABLE `Caja` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Cliente`
 --
 
@@ -69,6 +100,36 @@ INSERT INTO `Cliente` VALUES (1,'MIchael','na','','na');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Detalle_Venta`
+--
+
+DROP TABLE IF EXISTS `Detalle_Venta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Detalle_Venta` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `id_venta` int NOT NULL,
+  `id_producto` int NOT NULL,
+  `cantidad` int NOT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_venta` (`id_venta`),
+  KEY `id_producto` (`id_producto`),
+  CONSTRAINT `Detalle_Venta_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `Venta` (`id`),
+  CONSTRAINT `Detalle_Venta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `Producto` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Detalle_Venta`
+--
+
+LOCK TABLES `Detalle_Venta` WRITE;
+/*!40000 ALTER TABLE `Detalle_Venta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Detalle_Venta` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `Detalle_venta`
 --
 
@@ -86,7 +147,7 @@ CREATE TABLE `Detalle_venta` (
   KEY `fk_detaventa_producto` (`id_producto`),
   CONSTRAINT `fk_detaventa_producto` FOREIGN KEY (`id_producto`) REFERENCES `Producto` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_detaventa_venta` FOREIGN KEY (`id_venta`) REFERENCES `Venta` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,6 +156,7 @@ CREATE TABLE `Detalle_venta` (
 
 LOCK TABLES `Detalle_venta` WRITE;
 /*!40000 ALTER TABLE `Detalle_venta` DISABLE KEYS */;
+INSERT INTO `Detalle_venta` VALUES (1,1,1,1,22000.00),(2,2,1,1,22000.00),(3,3,1,1,22000.00),(4,4,1,1,22000.00),(5,5,2,1,223.00);
 /*!40000 ALTER TABLE `Detalle_venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +179,7 @@ CREATE TABLE `Producto` (
   PRIMARY KEY (`id`),
   KEY `fk_producto_categoria` (`id_categoria`),
   CONSTRAINT `fk_producto_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +188,7 @@ CREATE TABLE `Producto` (
 
 LOCK TABLES `Producto` WRITE;
 /*!40000 ALTER TABLE `Producto` DISABLE KEYS */;
-INSERT INTO `Producto` VALUES (1,'',NULL,'Computadora lexus',22000.00,5,NULL,2);
+INSERT INTO `Producto` VALUES (1,'','487607287261','Computadora lexus',22000.00,1,'1784259635_LEXUS.jpeg',2),(2,'PROD-7373','503243641170','burrito',223.00,43,'1784256809_pexels-pixabay-461198.jpg',2),(3,'PROD-5232','665772833877','LENOVO',223333.00,500,'1784259617_pngwing.com (1).png',2);
 /*!40000 ALTER TABLE `Producto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -201,7 +263,7 @@ CREATE TABLE `Venta` (
   KEY `fk_venta_cliente` (`id_usuario`),
   CONSTRAINT `fk_venta_cliente` FOREIGN KEY (`id_usuario`) REFERENCES `Cliente` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_venta_usuario` FOREIGN KEY (`id_cliente`) REFERENCES `Usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,6 +272,7 @@ CREATE TABLE `Venta` (
 
 LOCK TABLES `Venta` WRITE;
 /*!40000 ALTER TABLE `Venta` DISABLE KEYS */;
+INSERT INTO `Venta` VALUES (1,22000,'2026-07-17 02:58:45',1,1),(2,22000,'2026-07-17 02:59:32',1,1),(3,22000,'2026-07-17 02:59:59',1,1),(4,22000,'2026-07-17 03:01:56',1,1),(5,223,'2026-07-17 03:03:56',1,1);
 /*!40000 ALTER TABLE `Venta` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,4 +309,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-17  2:51:04
+-- Dump completed on 2026-07-17  3:43:04
