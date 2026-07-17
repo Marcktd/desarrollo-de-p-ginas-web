@@ -1,0 +1,17 @@
+{
+    "name": "Mi Proyecto PHP",
+    "forwardPorts": [8080, 3306],
+    "mounts": [
+        "source=mysql-data,target=/var/lib/mysql,type=volume"
+    ],
+    "postCreateCommand": "sudo apt-get update && sudo apt-get install -y mysql-server php-cli php-mysql && sudo service mysql start && sudo mysql -u root -e \"CREATE DATABASE IF NOT EXISTS sistema_ventas; CREATE USER IF NOT EXISTS 'app_user'@'localhost' IDENTIFIED BY 'password123'; GRANT ALL PRIVILEGES ON sistema_ventas.* TO 'app_user'@'localhost'; FLUSH PRIVILEGES;\" && if [ -f Sistema_Ventas.sql ]; then sudo mysql -u root sistema_ventas < Sistema_Ventas.sql; fi",
+    "postStartCommand": "sudo service mysql start",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense",
+                "xdebug.php-debug"
+            ]
+        }
+    }
+}
